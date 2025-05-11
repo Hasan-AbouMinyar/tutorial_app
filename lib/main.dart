@@ -12,7 +12,7 @@ class NameManagerApp extends StatelessWidget {
     return MaterialApp(
       title: "NAME MANAGER",
       theme: ThemeData(primaryColor: Colors.blue),
-      home: const HomeScreen(),
+      home: const _HomeScreen(),
     );
   }
 }
@@ -26,7 +26,10 @@ class _HomeScreen extends StatefulWidget {
 
 class __HomeScreenState extends State<_HomeScreen> {
 
-  
+  int _selectedIndex = 0;
+  final List<String> _names = [];
+  final TextEditingController _nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container();
