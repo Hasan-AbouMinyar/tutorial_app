@@ -10,6 +10,7 @@ class NameManagerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "NAME MANAGER",
       theme: ThemeData(primaryColor: Colors.blue),
       home: const _HomeScreen(),
