@@ -97,6 +97,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
       price: 100.0,
       imageUrl: 'https://via.placeholder.com/150',
     ),
+    Product(
+      name: 'Webcam',
+      price: 40.0,
+      imageUrl: 'https://via.placeholder.com/150',
+    ),
   ];
 
   List<Product> cart = [];
