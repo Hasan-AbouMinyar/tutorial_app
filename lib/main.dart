@@ -18,7 +18,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Product List',
-      theme: ThemeData(primarySwatch: Colors.teal),
+      debugShowCheckedModeBanner: false, // Remove the debug banner
+      theme: ThemeData(
+        primarySwatch: Colors.blueGrey, // Updated color scheme
+        scaffoldBackgroundColor: Colors.white, // Set background color
+        textTheme: TextTheme(
+          titleLarge: TextStyle(color: Colors.black87),
+          bodyMedium: TextStyle(color: Colors.black54),
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.blueGrey,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blueGrey,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+      ),
       home: ProductListScreen(),
     );
   }
