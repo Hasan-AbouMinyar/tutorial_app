@@ -36,127 +36,127 @@ class _ProductListScreenState extends State<ProductListScreen> {
     Product(
       name: "Headphones",
       price: 50.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1512499617640-c2f9992f0d8b',
     ),
     Product(
       name: 'Keyboard',
       price: 30.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Mouse',
       price: 20.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3',
     ),
     Product(
       name: 'Monitor',
       price: 150.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Laptop',
       price: 800.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Smartphone',
       price: 600.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Tablet',
       price: 300.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Smartwatch',
       price: 200.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Charger',
       price: 15.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'USB Cable',
       price: 10.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Power Bank',
       price: 25.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Bluetooth Speaker',
       price: 70.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'External Hard Drive',
       price: 100.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Webcam',
       price: 40.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Microphone',
       price: 60.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Graphics Card',
       price: 400.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Motherboard',
       price: 200.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'RAM',
       price: 80.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'SSD',
       price: 120.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'HDD',
       price: 60.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Router',
       price: 50.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Modem',
       price: 40.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Printer',
       price: 150.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Scanner',
       price: 100.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
     Product(
       name: 'Fax Machine',
       price: 200.0,
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
     ),
   ];
 
@@ -221,36 +221,36 @@ class _ProductListScreenState extends State<ProductListScreen> {
           final product = products[index];
           return Card(
             elevation: 4,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Column(
               children: [
-                Image.network(
-                  product.imageUrl,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(height: 8,),
+                Image.network(product.imageUrl, height: 100, fit: BoxFit.cover),
+                SizedBox(height: 8),
                 Text(
                   product.name,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '${product.price} USD', 
-                  style: TextStyle(color: Colors.grey[600]), 
+                  '${product.price} USD',
+                  style: TextStyle(color: Colors.grey[600]),
                 ),
                 Spacer(),
                 ElevatedButton.icon(
-                  icon: Icon(Icons.add_shopping_cart), 
-                  label: Text('Add to cart'), 
-                  onPressed: () => addToCart(product), 
+                  icon: Icon(Icons.add_shopping_cart),
+                  label: Text('Add to cart'),
+                  onPressed: () => addToCart(product),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal, 
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), 
+                    backgroundColor: Colors.teal,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
-                SizedBox(height: 8)
+                SizedBox(height: 8),
               ],
-            )
+            ),
           );
         },
       ),
@@ -277,44 +277,45 @@ class CartScreen extends StatelessWidget {
         ),
       ),
       child: SafeArea(
-        child: cart.isEmpty
-            ? Center(
-                child: Text(
-                  'Your cart is empty',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: CupertinoColors.systemGrey,
+        child:
+            cart.isEmpty
+                ? Center(
+                  child: Text(
+                    'Your cart is empty',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: CupertinoColors.systemGrey,
+                    ),
                   ),
-                ),
-              )
-            : ListView.builder(
-                itemCount: cart.length,
-                itemBuilder: (context, index) {
-                  final product = cart[index];
-                  return CupertinoListTile(
-                    leading: Image.network(
-                      product.imageUrl,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    title: Text(product.name),
-                    subtitle: Text(
-                      '${product.price} USD',
-                      style: TextStyle(color: CupertinoColors.systemGrey),
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        // Add remove logic here
-                      },
-                      child: Icon(
-                        CupertinoIcons.delete,
-                        color: CupertinoColors.destructiveRed,
+                )
+                : ListView.builder(
+                  itemCount: cart.length,
+                  itemBuilder: (context, index) {
+                    final product = cart[index];
+                    return CupertinoListTile(
+                      leading: Image.network(
+                        product.imageUrl,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                  );
-                },
-              ),
+                      title: Text(product.name),
+                      subtitle: Text(
+                        '${product.price} USD',
+                        style: TextStyle(color: CupertinoColors.systemGrey),
+                      ),
+                      trailing: GestureDetector(
+                        onTap: () {
+                          // Add remove logic here
+                        },
+                        child: Icon(
+                          CupertinoIcons.delete,
+                          color: CupertinoColors.destructiveRed,
+                        ),
+                      ),
+                    );
+                  },
+                ),
       ),
     );
   }
