@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() {
   runApp(MyApp());
@@ -185,25 +186,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
               IconButton(
                 icon: Icon(Icons.shopping_cart),
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder:
-                        (_) => AlertDialog(
-                          title: Text('Cart'),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children:
-                                cart
-                                    .map((product) => Text(product.name))
-                                    .toList(),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text("Close"),
-                            ),
-                          ],
-                        ),
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => CartScreen(cart: cart),
+                    ),
                   );
                 },
               ),
@@ -266,6 +253,68 @@ class _ProductListScreenState extends State<ProductListScreen> {
             )
           );
         },
+      ),
+    );
+  }
+}
+
+class CartScreen extends StatelessWidget {
+  final List<Product> cart;
+
+  const CartScreen({required this.cart, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('Cart'),
+        trailing: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Text(
+            'Close',
+            style: TextStyle(color: CupertinoColors.activeBlue),
+          ),
+        ),
+      ),
+      child: SafeArea(
+        child: cart.isEmpty
+            ? Center(
+                child: Text(
+                  'Your cart is empty',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: CupertinoColors.systemGrey,
+                  ),
+                ),
+              )
+            : ListView.builder(
+                itemCount: cart.length,
+                itemBuilder: (context, index) {
+                  final product = cart[index];
+                  return CupertinoListTile(
+                    leading: Image.network(
+                      product.imageUrl,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(product.name),
+                    subtitle: Text(
+                      '${product.price} USD',
+                      style: TextStyle(color: CupertinoColors.systemGrey),
+                    ),
+                    trailing: GestureDetector(
+                      onTap: () {
+                        // Add remove logic here
+                      },
+                      child: Icon(
+                        CupertinoIcons.delete,
+                        color: CupertinoColors.destructiveRed,
+                      ),
+                    ),
+                  );
+                },
+              ),
       ),
     );
   }
