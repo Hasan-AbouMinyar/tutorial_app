@@ -192,14 +192,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           title: Text('Cart'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
-                            children: cart.map((product) => Text(product.name)).toList(),
+                            children:
+                                cart
+                                    .map((product) => Text(product.name))
+                                    .toList(),
                           ),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
                               child: Text("Close"),
-                            )
-                          ]
+                            ),
+                          ],
                         ),
                   );
                 },
@@ -211,8 +214,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   child: Text(
                     cart.length.toString(),
                     style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                )
+                  ),
+                ),
             ],
           ),
         ],
@@ -228,8 +231,42 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
         itemCount: products.length,
         itemBuilder: (context, index) {
-        }
-      )
+          final product = products[index];
+          return Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: Column(
+              children: [
+                Image.network(
+                  product.imageUrl,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(height: 8,),
+                Text(
+                  product.name,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '${product.price} USD', 
+                  style: TextStyle(color: Colors.grey[600]), 
+                ),
+                Spacer(),
+                ElevatedButton.icon(
+                  icon: Icon(Icons.add_shopping_cart), 
+                  label: Text('Add to cart'), 
+                  onPressed: () => addToCart(product), 
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal, 
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), 
+                  ),
+                ),
+                SizedBox(height: 8)
+              ],
+            )
+          );
+        },
+      ),
     );
   }
 }
