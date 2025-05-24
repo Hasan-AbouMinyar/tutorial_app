@@ -163,12 +163,73 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   void addToCart(Product product) {
     setState(() {
-        
+      cart.add(product);
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${product.name} added to cart'),
+        duration: Duration(seconds: 1),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("electronics Store"),
+        actions: [
+          Stack(
+            alignment: Alignment.topRight,
+            children: [
+              IconButton(
+                icon: Icon(Icons.shopping_cart),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder:
+                        (_) => AlertDialog(
+                          title: Text('Cart'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: cart.map((product) => Text(product.name)).toList(),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text("Close"),
+                            )
+                          ]
+                        ),
+                  );
+                },
+              ),
+              if (cart.isEmpty)
+                CircleAvatar(
+                  radius: 10,
+                  backgroundColor: Colors.red,
+                  child: Text(
+                    cart.length.toString(),
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  )
+                )
+            ],
+          ),
+        ],
+      ),
+
+      body: GridView.builder(
+        padding: EdgeInsets.all(12),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.7,
+        ),
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+        }
+      )
+    );
   }
 }
