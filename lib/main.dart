@@ -55,6 +55,16 @@ class CartModel extends ChangeNotifier {
     }
   }
 
+  void increment(Product product) {
+    final existingItemIndex = _items.indexWhere(
+      (item) => item.product.name == product.name,
+    );
+    if (existingItemIndex != -1) {
+      _items[existingItemIndex].quantity++;
+      notifyListeners();
+    }
+  }
+
   void clear() {
     _items.clear();
     notifyListeners();
@@ -137,6 +147,7 @@ class Product {
   final String price;
   final String description; // Added description
   final List<String> specifications; // Added specifications
+  final String category; // Added category property
 
   Product({
     required this.name,
@@ -150,6 +161,7 @@ class Product {
       'Storage: Up to 2TB',
       'Connectivity: Wi-Fi 6E, Bluetooth 5.3',
     ],
+    required this.category, // Category is now required
   });
 }
 
@@ -161,18 +173,21 @@ class ShopTabPage extends StatelessWidget {
       imageUrl:
           'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blue-titanium',
       price: 'From \$999',
+      category: 'Phones',
     ),
     Product(
       name: 'MacBook Air M2',
       imageUrl:
           'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp-spacegray-select-202206_GEO_EMEA_LANG_EN',
       price: 'From \$1099',
+      category: 'Laptops',
     ),
     Product(
       name: 'Apple Watch Series 9',
       imageUrl:
           'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-s9-select-202309_GEO_EMEA_LANG_EN',
       price: 'From \$399',
+      category: 'Wearables',
     ),
     Product(
       name: 'iPad Pro',
@@ -187,6 +202,7 @@ class ShopTabPage extends StatelessWidget {
         'ProMotion Technology',
         'Thunderbolt / USB 4',
       ],
+      category: 'Tablets',
     ),
     Product(
       name: 'AirPods Max',
@@ -201,6 +217,7 @@ class ShopTabPage extends StatelessWidget {
         'Spatial Audio',
         'Knit-mesh Canopy',
       ],
+      category: 'Accessories',
     ),
   ];
 
@@ -208,8 +225,45 @@ class ShopTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String selectedCategory = 'All';
+
+    List<Product> filteredProducts =
+        selectedCategory == 'All'
+            ? products
+            : products
+                .where((product) => product.category == selectedCategory)
+                .toList();
+
     return CustomScrollView(
       slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 24.0, left: 16.0, bottom: 16.0),
+            child: Text(
+              'Featured Products',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: 200,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  width: 150,
+                  margin: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ProductCard(product: products[index]),
+                );
+              },
+            ),
+          ),
+        ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(top: 24.0, left: 16.0, bottom: 16.0),
@@ -236,8 +290,8 @@ class ShopTabPage extends StatelessWidget {
               int index,
             ) {
               // Added BuildContext
-              return ProductCard(product: products[index]);
-            }, childCount: products.length),
+              return ProductCard(product: filteredProducts[index]);
+            }, childCount: filteredProducts.length),
           ),
         ),
         SliverToBoxAdapter(
@@ -439,7 +493,6 @@ class ProductDetailPage extends StatelessWidget {
                       .toList(),
             ),
             SizedBox(height: 24),
-            // Placeholder for Reviews - Can be expanded later
             Text(
               'Reviews & Ratings',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -472,7 +525,7 @@ class ProductDetailPage extends StatelessWidget {
                 color: Colors.grey[600],
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
                 Provider.of<CartModel>(context, listen: false).add(product);
@@ -481,7 +534,7 @@ class ProductDetailPage extends StatelessWidget {
                     content: Text('${product.name} added to cart!'),
                     duration: Duration(seconds: 2),
                     backgroundColor: Colors.green[600],
-                    behavior: SnackBarBehavior.floating, // More modern look
+                    behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -491,15 +544,19 @@ class ProductDetailPage extends StatelessWidget {
               child: Text('Add to Cart'),
             ),
             SizedBox(height: 16),
-            OutlinedButton(
+            ElevatedButton(
               onPressed: () {
+                Provider.of<CartModel>(
+                  context,
+                  listen: false,
+                ).increment(product);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      'Added ${product.name} to wishlist (feature coming soon!)',
+                      'Increased quantity of ${product.name} in cart!',
                     ),
                     duration: Duration(seconds: 2),
-                    backgroundColor: Colors.orange[600],
+                    backgroundColor: Colors.blue[600],
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -507,7 +564,7 @@ class ProductDetailPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Add to Wishlist'),
+              child: Text('Increase Quantity'),
             ),
             SizedBox(height: 20), // Bottom padding
           ],
@@ -1100,34 +1157,40 @@ class _SearchTabPageState extends State<SearchTabPage> {
       imageUrl:
           'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blue-titanium',
       price: 'From \$999',
+      category: 'Phones',
     ),
     Product(
       name: 'MacBook Air M2',
       imageUrl:
           'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp-spacegray-select-202206_GEO_EMEA_LANG_EN',
       price: 'From \$1099',
+      category: 'Laptops',
     ),
     Product(
       name: 'Apple Watch Series 9',
       imageUrl:
           'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-s9-select-202309_GEO_EMEA_LANG_EN',
       price: 'From \$399',
+      category: 'Wearables',
     ),
     Product(
       name: 'iPad Air',
       imageUrl:
           'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-air-finish-select-gallery-202211-blue-wifi_FMT_WHH',
       price: 'From \$599',
+      category: 'Tablets',
     ),
     Product(
       name: 'AirPods Pro (2nd generation)',
       imageUrl:
           'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQD83_AV4',
       price: 'From \$249',
+      category: 'Accessories',
     ),
   ];
   List<Product> _filteredProducts = [];
   String _searchQuery = '';
+  String selectedCategory = 'All';
 
   @override
   void initState() {
@@ -1148,131 +1211,62 @@ class _SearchTabPageState extends State<SearchTabPage> {
   }
 
   void _filterProducts() {
-    if (_searchQuery.isEmpty) {
-      _filteredProducts = _allProducts;
-    } else {
+    setState(() {
       _filteredProducts =
           _allProducts.where((product) {
-            return product.name.toLowerCase().contains(
+            final matchesQuery = product.name.toLowerCase().contains(
               _searchQuery.toLowerCase(),
             );
+            final matchesCategory =
+                selectedCategory == 'All' ||
+                product.category == selectedCategory;
+            return matchesQuery && matchesCategory;
           }).toList();
-    }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(
-            top: 24.0,
-            left: 16.0,
-            right: 16.0,
-            bottom: 8.0,
-          ),
-          child: Text(
-            "Search",
-            style: Theme.of(context).textTheme.displaySmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'Search for products, accessories, and more',
-              hintStyle: TextStyle(color: Colors.grey[500]),
-              prefixIcon: Icon(Icons.search, color: Colors.grey[500]),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.0),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: Colors.grey[200],
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 14.0,
-              ), // Adjust vertical padding
-            ),
+          padding: const EdgeInsets.all(8.0),
+          child: DropdownButton<String>(
+            value: selectedCategory,
+            items:
+                [
+                      'All',
+                      'Phones',
+                      'Laptops',
+                      'Wearables',
+                      'Tablets',
+                      'Accessories',
+                    ]
+                    .map(
+                      (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(category),
+                      ),
+                    )
+                    .toList(),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() {
+                  selectedCategory = value;
+                  _filterProducts();
+                });
+              }
+            },
           ),
         ),
-        if (_searchQuery.isNotEmpty && _filteredProducts.isEmpty)
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.search_off, size: 80, color: Colors.grey[300]),
-                  SizedBox(height: 16),
-                  Text(
-                    'No results for "$_searchQuery"',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Try checking your spelling or use different keywords.',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleMedium?.copyWith(color: Colors.grey[500]),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          )
-        else if (_searchQuery.isEmpty)
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.manage_search_rounded,
-                    size: 80,
-                    color: Colors.grey[300],
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Discover Apple Products',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Find iPhones, Macs, Watches, and more.',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleMedium?.copyWith(color: Colors.grey[500]),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          )
-        else
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16.0),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 0.70, // Consistent with ShopTabPage
-              ),
-              itemCount: _filteredProducts.length,
-              itemBuilder: (context, index) {
-                return ProductCard(product: _filteredProducts[index]);
-              },
-            ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _filteredProducts.length,
+            itemBuilder: (context, index) {
+              return ProductCard(product: _filteredProducts[index]);
+            },
           ),
+        ),
       ],
     );
   }
