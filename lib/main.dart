@@ -71,6 +71,8 @@ void main() {
 }
 
 class AppleStoreCloneApp extends StatelessWidget {
+  const AppleStoreCloneApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -202,6 +204,8 @@ class ShopTabPage extends StatelessWidget {
     ),
   ];
 
+  ShopTabPage({super.key}); // Removed 'const'
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -210,8 +214,8 @@ class ShopTabPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 24.0, left: 16.0, bottom: 16.0),
             child: Text(
-              "What\'s New",
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              'Shop', // Added title
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
               ),
@@ -222,7 +226,7 @@ class ShopTabPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           sliver: SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: 2, // Added crossAxisCount
               crossAxisSpacing: 16.0,
               mainAxisSpacing: 16.0,
               childAspectRatio: 0.70, // Adjusted for more content
@@ -231,6 +235,7 @@ class ShopTabPage extends StatelessWidget {
               BuildContext context,
               int index,
             ) {
+              // Added BuildContext
               return ProductCard(product: products[index]);
             }, childCount: products.length),
           ),
@@ -246,7 +251,7 @@ class ShopTabPage extends StatelessWidget {
 class ProductCard extends StatelessWidget {
   final Product product;
 
-  const ProductCard({Key? key, required this.product}) : super(key: key);
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -270,81 +275,55 @@ class ProductCard extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 3, // Give more space to image
-              child: Hero(
-                tag:
-                    product
-                        .imageUrl, // Ensure this tag is unique per product for Hero animation
-                child: CachedNetworkImage(
-                  imageUrl: product.imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder:
-                      (context, url) => Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.blueGrey,
-                        ),
+              child: CachedNetworkImage(
+                imageUrl: product.imageUrl, // Added imageUrl
+                fit: BoxFit.cover,
+                placeholder:
+                    (context, url) => Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blueGrey[200],
                       ),
-                  errorWidget:
-                      (context, url, error) => Center(
-                        child: Icon(
-                          Icons.broken_image,
-                          size: 40,
-                          color: Colors.grey[400],
-                        ),
+                    ),
+                errorWidget:
+                    (context, url, error) => Center(
+                      child: Icon(
+                        Icons.broken_image,
+                        color: Colors.grey[400],
+                        size: 40,
                       ),
-                ),
+                    ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    product.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15, // Slightly adjusted
-                      color: Colors.black87,
-                    ),
-                    maxLines: 1, // Ensure it fits well
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    product.price,
-                    style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-                  ),
-                ],
+              padding: const EdgeInsets.fromLTRB(
+                12.0,
+                12.0,
+                12.0,
+                4.0,
+              ), // Adjusted padding
+              child: Text(
+                product.name, // Added product name
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 10.0,
-                right: 10.0,
-                bottom: 10.0,
-              ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 8,
-                  ), // Smaller padding for button in card
-                  textStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
+              padding: const EdgeInsets.fromLTRB(
+                12.0,
+                0,
+                12.0,
+                12.0,
+              ), // Adjusted padding
+              child: Text(
+                product.price, // Added product price
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w500,
                 ),
-                onPressed: () {
-                  Provider.of<CartModel>(context, listen: false).add(product);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${product.name} added to cart!'),
-                      duration: Duration(seconds: 2),
-                      backgroundColor: Colors.green[600],
-                    ),
-                  );
-                },
-                child: Text('Add to Cart'),
               ),
             ),
           ],
@@ -358,7 +337,7 @@ class ProductCard extends StatelessWidget {
 class ProductDetailPage extends StatelessWidget {
   final Product product;
 
-  const ProductDetailPage({Key? key, required this.product}) : super(key: key);
+  const ProductDetailPage({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -540,6 +519,8 @@ class ProductDetailPage extends StatelessWidget {
 
 // Cart Page
 class CartPage extends StatelessWidget {
+  const CartPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartModel>(context);
@@ -582,13 +563,13 @@ class CartPage extends StatelessWidget {
                             context,
                             ModalRoute.withName('/'),
                           ),
-                      child: Text('Continue Shopping'),
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(
                           horizontal: 40,
                           vertical: 15,
                         ),
                       ),
+                      child: Text('Continue Shopping'),
                     ),
                   ],
                 ),
@@ -822,10 +803,10 @@ class CartPage extends StatelessWidget {
                                       ),
                                     );
                                   },
-                          child: Text('Proceed to Checkout'),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(double.infinity, 50),
                           ),
+                          child: Text('Proceed to Checkout'),
                         ),
                         SizedBox(height: 8),
                         if (cart.items.isNotEmpty)
@@ -862,6 +843,8 @@ class CartPage extends StatelessWidget {
 }
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -997,6 +980,8 @@ class TodayTabPage extends StatelessWidget {
     },
   ];
 
+  TodayTabPage({super.key}); // Removed 'const'
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -1032,7 +1017,7 @@ class TodayTabPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 height: 250, // Increased height for better visual
                 width: double.infinity,
                 child: CachedNetworkImage(
@@ -1100,13 +1085,15 @@ class TodayTabPage extends StatelessWidget {
 
 // Search Tab Page
 class SearchTabPage extends StatefulWidget {
+  const SearchTabPage({super.key});
+
   @override
   _SearchTabPageState createState() => _SearchTabPageState();
 }
 
 class _SearchTabPageState extends State<SearchTabPage> {
   final TextEditingController _searchController = TextEditingController();
-  List<Product> _allProducts = [
+  final List<Product> _allProducts = [
     // Duplicating product list for now
     Product(
       name: 'iPhone 15 Pro',
