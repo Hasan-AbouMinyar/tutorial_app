@@ -60,47 +60,212 @@ class ShopTabPage extends StatelessWidget {
           'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-s9-select-202309_GEO_EMEA_LANG_EN',
       price: 'From \$399',
     ),
+    // Add more products as needed
   ];
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return Card(
-          elevation: 0.3,
-          margin: EdgeInsets.only(bottom: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverPadding(
+          padding: const EdgeInsets.all(16.0),
+          sliver: SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Number of columns
+              crossAxisSpacing: 16.0, // Horizontal space between cards
+              mainAxisSpacing: 16.0, // Vertical space between cards
+              childAspectRatio: 0.75, // Aspect ratio of the cards
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return ProductCard(product: products[index]);
+              },
+              childCount: products.length,
+            ),
           ),
-          child: ListTile(
-            contentPadding: EdgeInsets.all(12),
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: CachedNetworkImage(
-                imageUrl: product.imageUrl,
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                    CircularProgressIndicator(strokeWidth: 2),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
+      ],
+    );
+  }
+}
+
+class ProductCard extends StatelessWidget {
+  final Product product;
+
+  const ProductCard({Key? key, required this.product}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      clipBehavior: Clip.antiAlias, // Important for rounded corners on image
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: CachedNetworkImage(
+              imageUrl: product.imageUrl,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              placeholder: (context, url) => Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              errorWidget: (context, url, error) => Center(child: Icon(Icons.broken_image, size: 40, color: Colors.grey)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  product.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 4),
+                Text(
+                  product.price,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                minimumSize: Size(double.infinity, 36), // Full width button
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0)
+                )
+              ),
+              onPressed: () {
+                // Navigate to product detail page
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailPage(product: product)));
+                /* ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Tapped on ${product.name}')),
+                );*/
+              },
+              child: Text('View Details', style: TextStyle(color: Colors.white)),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+// Product Detail Page
+class ProductDetailPage extends StatelessWidget {
+  final Product product;
+
+  const ProductDetailPage({Key? key, required this.product}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(product.name),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Center(
+              child: Hero(
+                tag: product.imageUrl, // Unique tag for Hero animation
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: CachedNetworkImage(
+                    imageUrl: product.imageUrl,
+                    fit: BoxFit.contain, // Use contain to see the whole image
+                    height: MediaQuery.of(context).size.height * 0.4, // Adjust height as needed
+                    placeholder: (context, url) => Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                    errorWidget: (context, url, error) => Center(child: Icon(Icons.broken_image, size: 100, color: Colors.grey)),
+                  ),
+                ),
               ),
             ),
-            title: Text(
+            SizedBox(height: 24),
+            Text(
               product.name,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(product.price),
-            trailing: Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              // مكان التنقل لصفحة التفاصيل
-            },
-          ),
-        );
-      },
+            SizedBox(height: 8),
+            Text(
+              product.price,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey[800]),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Description', // Placeholder for description section title
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'This is a detailed description of ${product.name}. More information will be available soon. Stay tuned for updates on features, specifications, and availability.', // Placeholder description
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[600], height: 1.5),
+            ),
+            SizedBox(height: 24),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                minimumSize: Size(double.infinity, 50), // Full width button, taller
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0)
+                ),
+                textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+              ),
+              onPressed: () {
+                // Add to cart functionality to be implemented
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('${product.name} added to cart (not really!)')),
+                );
+              },
+              child: Text('Add to Cart', style: TextStyle(color: Colors.white)),
+            ),
+            SizedBox(height: 16),
+            OutlinedButton(
+               style: OutlinedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
+                padding: EdgeInsets.symmetric(vertical: 16),
+                side: BorderSide(color: Colors.blue, width: 1.5),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0)
+                ),
+                textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue)
+              ),
+              onPressed: () {
+                // Add to wishlist or other secondary action
+                 ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Added ${product.name} to wishlist (not really!)')),
+                );
+              },
+              child: Text('Add to Wishlist', style: TextStyle(color: Colors.blue)),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
