@@ -26,7 +26,7 @@ class AppleStoreCloneApp extends StatelessWidget {
           ),
         ),
       ),
-      home: StorePage(),
+      home: MainScreen(),
     );
   }
 }
@@ -39,7 +39,8 @@ class Product {
   Product({required this.name, required this.imageUrl, required this.price});
 }
 
-class StorePage extends StatelessWidget {
+// New Tab Page for Shop
+class ShopTabPage extends StatelessWidget {
   final List<Product> products = [
     Product(
       name: 'iPhone 15 Pro',
@@ -63,46 +64,119 @@ class StorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        final product = products[index];
+        return Card(
+          elevation: 0.3,
+          margin: EdgeInsets.only(bottom: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: ListTile(
+            contentPadding: EdgeInsets.all(12),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: CachedNetworkImage(
+                imageUrl: product.imageUrl,
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    CircularProgressIndicator(strokeWidth: 2),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+            ),
+            title: Text(
+              product.name,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(product.price),
+            trailing: Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {
+              // مكان التنقل لصفحة التفاصيل
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+// Placeholder Tab Page for Today
+class TodayTabPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Today Page - Coming Soon!'),
+    );
+  }
+}
+
+// Placeholder Tab Page for Search
+class SearchTabPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Search Page - Coming Soon!'),
+    );
+  }
+}
+
+// Main Screen with Bottom Navigation Bar
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _currentIndex = 0;
+  final List<Widget> _pages = [
+    ShopTabPage(),
+    TodayTabPage(),
+    SearchTabPage(),
+  ];
+  final List<String> _pageTitles = [
+    'Shop',
+    'Today',
+    'Search',
+  ];
+
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Store'), centerTitle: true),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return Card(
-            elevation: 0.3,
-            margin: EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: ListTile(
-              contentPadding: EdgeInsets.all(12),
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: CachedNetworkImage(
-                  imageUrl: product.imageUrl,
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                  placeholder:
-                      (context, url) =>
-                          CircularProgressIndicator(strokeWidth: 2),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
-              ),
-              title: Text(
-                product.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(product.price),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                // مكان التنقل لصفحة التفاصيل
-              },
-            ),
-          );
-        },
+      appBar: AppBar(
+        title: Text(_pageTitles[_currentIndex]),
+        centerTitle: true, // Apple-like centered title
+      ),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped,
+        selectedItemColor: Theme.of(context).primaryColor, // Or Colors.blue for Apple's blue
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.storefront),
+            label: 'Shop',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.article), // Icon for "Today" or "Feed"
+            label: 'Today',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+        ],
       ),
     );
   }
