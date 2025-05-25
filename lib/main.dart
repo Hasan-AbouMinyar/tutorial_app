@@ -19,31 +19,42 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Product List',
-      debugShowCheckedModeBanner: false, // Remove the debug banner
+      title: 'Apple Store',
+      debugShowCheckedModeBanner: false, // Remove debug banner
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey, // Updated color scheme
-        scaffoldBackgroundColor: Colors.white, // Set background color
-        textTheme: TextTheme(
-          titleLarge: TextStyle(color: Colors.black87),
-          bodyMedium: TextStyle(color: Colors.black54),
-        ),
+        primaryColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.blueGrey,
-          foregroundColor: Colors.white,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
           elevation: 0,
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        textTheme: TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 16,
+            color: Colors.black,
+          ),
+          bodyMedium: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[600],
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Colors.black,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
         ),
       ),
-      home: ProductListScreen(),
+      home: const ProductListScreen(),
     );
   }
 }
