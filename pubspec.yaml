@@ -73,7 +73,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+  dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.1.0
+  cached_network_image: ^3.3.1
+
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
