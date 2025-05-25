@@ -14,6 +14,8 @@ class Product {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -283,7 +285,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 class CartScreen extends StatelessWidget {
   final List<Product> cart;
 
-  const CartScreen({required this.cart, Key? key}) : super(key: key);
+  const CartScreen({required this.cart, super.key});
 
   @override
   Widget build(BuildContext context) {
